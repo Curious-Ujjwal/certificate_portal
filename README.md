@@ -2,9 +2,9 @@
 
 
 ## Installation
-*Clone the repo
-*Setup a virtual environment (install virtual environment from ```pip install virtualenv==16.7.9```)
-*Run 
+* Clone the repo
+* Setup a virtual environment (install virtual environment from ```pip install virtualenv==16.7.9```)
+* Run 
 ```
 pip install -r requirements.txt
 ```
