@@ -10,4 +10,4 @@ pip install -r requirements.txt
 ```
 
 
-## Project should be good to run :thumbsup:
+## Project is ready :thumbsup:
