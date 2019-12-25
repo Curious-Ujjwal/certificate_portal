@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}See you!{% endblock %}
+
+{% block content %}
+  <p>
+    Welcome to Certificate portal Alcheringa
+  </p>
+  {% if user.is_authenticated %}
+  
+   Hi {{ user.username }}!
+
+  
+  <a href="{% url 'logout' %}">logout</a>
+  {% else %}
+  <p>
+    You are not logged in!!
+  </p>
+  <a href="{% url 'login' %}">login</a>
+  {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
