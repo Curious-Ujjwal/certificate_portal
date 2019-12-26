@@ -5,7 +5,8 @@ from django.contrib.auth import logout
 def index(request):
     return render(request , 'registration/index.html')
 
-def logout(request):
+def logoutView(request):
+    logout(request)
     return render(request , 'registration/logout.html')
 
 # def logout_view(request):
