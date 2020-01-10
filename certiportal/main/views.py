@@ -26,7 +26,15 @@ def certificate(request, cert_id):
     	return render(request, 'registration/index.html')
 
     context = {
-        candid = candid,
+        'candid_name' : candid.name,
+        'candid_alcher_id' : candid.alcher_id,
+
     }
-    return Render.render('certificate/certificateParticipant.html', context)
+    print(candid.alcher_id)
+    if candid.certificate_type == 'P': 
+        return Render.render('certificate/certificateParticipation.html', context)
+    if candid.certificate_type == 'CA': 
+        return Render.render('certificate/certificateCA.html', context)
+    if candid.certificate_type == 'W': 
+        return Render.render('certificate/certificateWinner.html', context)
 
