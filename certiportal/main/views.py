@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .render import Render
 from .forms import *
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
 
 # Create your views here.
 def index(request):
@@ -85,6 +88,31 @@ def candidForm(request):
 def candidList(request):
     candids = candidate.objects.filter(year=current_year())               ########### Have to change it every year !!!
     context = {
-    'candids': candids,
+        'candids': candids,
     }
     return render(request, 'main/candidlist.html', context)
+
+@login_required
+def send_email(request):
+    # try:
+    #     candid = candidate.objects.get(alcher_id = alcher_id)
+    # except candidate.DoesNotExist:
+    #     candid = None
+
+    # if not candid or not candid.is_valid:
+    # 	#Candidate does not exist return to index.html
+    # 	return render(request, 'registration/index.html')
+
+    # context = {
+    #     'candid' : candid
+    # }
+# render_to_string('main/emails/mail.txt', context),
+    send_mail(
+        'Certificate Alcheringa: ' + str(current_year()),
+        'sample text mail',
+        'helpdesk@alcheringa.in',
+        ['sidjain.24.sj@gmail.com'],
+        fail_silently=False 
+    )    
+    return render(request, 'main/mail_sent.html')
+    

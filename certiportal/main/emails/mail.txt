@@ -1,0 +1,9 @@
+Hi {{cadid.name}} ({{candid.alcher_id}})
+
+Your certifiacte is ready!
+You can now visit {{candid.certificate_url}} and download your e-certificate.
+
+-
+Thank You
+
+Team Alcheringa
