@@ -9,8 +9,13 @@
   {% if user.is_authenticated %}
   
    Hi {{ user.username }}!
-
-  
+  <br>
+  Choose your option:
+  <br>
+  <a href="{% url 'candidForm' %}">Enter Candidate data</a>
+  <br>
+  <a href="{% url 'candidList' %}">View Candidate data</a>
+<br>
   <a href="{% url 'logout' %}">logout</a>
   {% else %}
   <p>

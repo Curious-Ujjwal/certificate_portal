@@ -8,4 +8,5 @@ EVENT_OPTIONS = [
         ('Dance', 'Electric Heels'),
         ('Music' , 'Raga High' ),
         ('Drama' , 'Street Play'),
+        ('None' , 'None'),
     ]
