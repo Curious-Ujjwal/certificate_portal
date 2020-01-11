@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .render import Render
 from .forms import *
@@ -11,7 +12,6 @@ def index(request):
 def logoutView(request):
     logout(request)
     return render(request , 'registration/logout.html')
-
 
 
 def certificate(request, cert_id):
@@ -61,7 +61,7 @@ def generateUrl(alcher_id):
     return new_url
 
 
-
+@login_required
 def candidForm(request):
     if request.method == 'POST':
         form = CandidForm(request.POST)
@@ -81,7 +81,7 @@ def candidForm(request):
     
     return render(request, 'main/candidform.html', {'form':form}) 
 
-
+@login_required
 def candidList(request):
     candids = candidate.objects.filter(year=2020)               ########### Have to change it every year !!!
     context = {
