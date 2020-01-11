@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}See you!{% endblock %}
+
+{% block content %}
+
+<table rules="all">
+	<thead>
+		<th>ALCHER_ID</th>
+		<th>NAME</th>
+		<th>CERTIFICATE_TYPE</th>
+		<th>EVENT</th>
+		<th>IS_VALID</th>
+	</thead>
+	<tbody>
+		{% for candid in candids %}
+		<tr>
+			<td>{{candid.alcher_id}}</td>
+			<td>{{candid.name}}</td>
+			<td>{{candid.get_certificate_type_display}}</td>
+			{% if candid.certificate_type == 'CA' %}
+			<td> -- </td>
+			{% else %}
+			<td>{{candid.event}}</td>
+			{% endif %}
+			<td>{{candid.is_valid}}</td>
+			{% if candid.is_valid and candid.is_generated %}
+			<td><a href="#"><button>Send Email</button></a></td>
+			{% endif %}
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+	
+	<a href="{% url 'candidForm' %}"><button>
+		Add Candidate
+	</button></a>
+
+{% endblock %}
