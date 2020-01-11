@@ -16,14 +16,14 @@
   <br>
   <a href="{% url 'candidList' %}">View Candidate data</a>
   <br>
-  <a href="{% url 'candidBulk' %}">Enter data through CSV</a>
+  <a href="{% url 'candidBulk' %}">Add Candidates through CSV</a>
   <br>
-  <a href="{% url 'logout' %}">logout</a>
+  <a href="{% url 'logout' %}">Logout</a>
   {% else %}
   <p>
     You are not logged in!!
   </p>
-  <a href="{% url 'login' %}">login</a>
+  <a href="{% url 'login' %}">Login</a>
   {% endif %}
 {% endblock %}
 
