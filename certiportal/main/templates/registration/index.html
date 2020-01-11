@@ -15,7 +15,9 @@
   <a href="{% url 'candidForm' %}">Enter Candidate data</a>
   <br>
   <a href="{% url 'candidList' %}">View Candidate data</a>
-<br>
+  <br>
+  <a href="{% url 'candidBulk' %}">Enter data through CSV</a>
+  <br>
   <a href="{% url 'logout' %}">logout</a>
   {% else %}
   <p>
