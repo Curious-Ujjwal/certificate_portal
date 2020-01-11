@@ -25,7 +25,7 @@
 			{% endif %}
 			<td>{{candid.is_valid}}</td>
 			{% if candid.is_valid and candid.is_generated %}
-			<td><a href="{% url 'send_email' %}"><button>Send Email</button></a></td>
+			<td><a href="{% url 'send_email' candid.alcher_id %}"><button>Send Email</button></a></td>
 			{% endif %}
 		</tr>
 	{% endfor %}

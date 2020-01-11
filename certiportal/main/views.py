@@ -84,7 +84,7 @@ def candidForm(request):
     else:
         form = CandidForm()
     
-    return render(request, 'main/candidform.html', {'form':form}) 
+    return render(request, 'main/candidform.html', {'form':form} ) 
 
 @login_required
 def candidList(request):
@@ -95,27 +95,28 @@ def candidList(request):
     return render(request, 'main/candidlist.html', context)
 
 @login_required
-def send_email(request):
-    # try:
-    #     candid = candidate.objects.get(alcher_id = alcher_id)
-    # except candidate.DoesNotExist:
-    #     candid = None
+def send_email(request , alcher_id):
+    try:
+        candid = candidate.objects.get(alcher_id = alcher_id)
+    except candidate.DoesNotExist:
+        candid = None
 
-    # if not candid or not candid.is_valid:
-    # 	#Candidate does not exist return to index.html
-    # 	return render(request, 'registration/index.html')
+    if not candid or not candid.is_valid:
+    	#Candidate does not exist return to index.html
+    	return render(request, 'registration/index.html')
 
-    # context = {
-    #     'candid' : candid
-    # }
-# render_to_string('main/emails/mail.txt', context),
+    context = {
+        'candid' : candid
+    }
+
     send_mail(
         'Certificate Alcheringa: ' + str(current_year()),
-        'sample text mail',
+         render_to_string('main/emails/mail.txt', context),
         'helpdesk@alcheringa.in',
         ['sidjain.24.sj@gmail.com'],
-        fail_silently=False 
+        fail_silently = False,
     )    
+
     return render(request, 'main/mail_sent.html')
     
 
@@ -185,4 +186,3 @@ def candidBulk(request):
     else:
         form = CSVUploadForm()
         return render(request, 'main/candidbulk.html', {'form':form}) 
-

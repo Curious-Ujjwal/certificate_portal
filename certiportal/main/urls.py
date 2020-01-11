@@ -7,7 +7,7 @@ urlpatterns = [
     path('candidlist', views.candidList , name="candidList"),
     path('candidbulk', views.candidBulk , name="candidBulk"),
     path('accounts/logout/', views.logoutView , name="logoutView"),
-    path('mail_sent', views.send_email , name="send_email"),
+    path('mail_sent/<slug:alcher_id>', views.send_email , name="send_email"),
     re_path(r'^certificate/(?P<cert_id>ALC-[A-Z]{3}-[0-9]+-20[0-9]{2}-[0-9]+)/$', views.certificate , name="certificate"),
 ]
 
