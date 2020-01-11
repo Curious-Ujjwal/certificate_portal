@@ -5,8 +5,8 @@ CERTIFICATE_OPTIONS = [
     ]
 
 EVENT_OPTIONS = [
-        ('Dance', 'Electric Heels'),
-        ('Music' , 'Raga High' ),
-        ('Drama' , 'Street Play'),
+        ('Electric Heels', 'Electric Heels'),
+        ('Raga High' , 'Raga High' ),
+        ('Street Play' , 'Street Play'),
         ('None' , 'None'),
     ]

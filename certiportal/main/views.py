@@ -6,7 +6,10 @@ from .render import Render
 from .forms import *
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-
+from django.contrib import messages
+from .choices import *
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator, EmailValidator
 
 # Create your views here.
 def index(request):
@@ -30,9 +33,8 @@ def certificate(request, cert_id):
     context = {
         'candid_name' : candid.name,
         'candid_alcher_id' : candid.alcher_id,
-
     }
-    print(candid.alcher_id)
+
     if candid.certificate_type == 'P': 
         return Render.render('certificate/certificateParticipation.html', context)
     elif candid.certificate_type == 'CA': 
@@ -41,10 +43,10 @@ def certificate(request, cert_id):
         return Render.render('certificate/certificateWinner.html', context)
 
 
-def isDuplicate(alcher_id, event, certificate_type):
+def isDuplicate(alcher_id, event, certificate_type, year):
     try:
         candid = candidate.objects.get(alcher_id=alcher_id, event=event, 
-            certificate_type=certificate_type, year=current_year() )       ########### Have to change it every year !!!
+            certificate_type=certificate_type, year=year)
     except candidate.DoesNotExist:
         return False
     else:
@@ -58,8 +60,7 @@ def generateUrl(alcher_id , year):
         latest_cert = candid_certificates.last()
         arr = latest_cert.certificate_url.split('-')
         last_num = int(arr[4])
-        print(latest_cert.certificate_type)
-    new_url = alcher_id + '-' + str(year) + '-' + str(last_num+1)  ########### Have to change it every year !!!
+    new_url = alcher_id + '-' + str(year) + '-' + str(last_num+1)
     return new_url
 
 
@@ -73,11 +74,12 @@ def candidForm(request):
             event = form.cleaned_data['event']
             certificate_type = form.cleaned_data['certificate_type']
             year = form.cleaned_data['year']
-            if not isDuplicate(alcher_id, event, certificate_type):
+            email = form.cleaned_data['email']
+            if not isDuplicate(alcher_id, event, certificate_type, year):
                 new_url = generateUrl(alcher_id , year)
                 candidate.objects.create(alcher_id=alcher_id, name=name, event=event, 
                     certificate_type=certificate_type, is_valid=True, is_generated=True, 
-                    certificate_url=new_url, year=current_year())           ########### Have to change it every year !!!
+                    certificate_url=new_url, email=email, year=year)
             return redirect('candidList')
     else:
         form = CandidForm()
@@ -86,7 +88,7 @@ def candidForm(request):
 
 @login_required
 def candidList(request):
-    candids = candidate.objects.filter(year=current_year())               ########### Have to change it every year !!!
+    candids = candidate.objects.filter(year=current_year())
     context = {
         'candids': candids,
     }
@@ -114,5 +116,73 @@ def send_email(request , alcher_id):
         ['sidjain.24.sj@gmail.com'],
         fail_silently = False,
     )    
-    return render(request, 'main/mail_sent.html' , context )
+
+    return render(request, 'main/mail_sent.html')
     
+
+
+
+def readDataFromCSV(csv_file):
+    event_choices_list = [x[0] for x in EVENT_OPTIONS]
+    certificate_choices_list = [x[0] for x in CERTIFICATE_OPTIONS]
+    file_data = csv_file.read().decode("utf-8") 
+    lines = file_data.split("\n")
+    
+    skipped_candids = []
+    for line in lines:
+        fields = line.split(",")
+        if len(fields) < 5:
+            continue
+
+        alcher_id = fields[0].strip()        
+        name = fields[1].strip()
+        certificate_type = fields[2].strip()  
+        event = fields[3].strip()
+        year = fields[4].strip()
+        email = fields[5].strip()
+
+        try:
+            email_validator = EmailValidator()
+            alcher_id_validator = RegexValidator(r"ALC-[A-Z]{3}-[0-9]+")
+            alcher_id_validator(alcher_id)
+            email_validator(email)
+        except ValidationError:
+            skipped_candids.append((alcher_id,event))
+            continue
+
+        if certificate_type not in certificate_choices_list or event not in event_choices_list:
+            skipped_candids.append((alcher_id,event))
+            continue
+
+        if not isDuplicate(alcher_id, event, certificate_type, year):
+            new_url = generateUrl(alcher_id, year)
+            candidate.objects.create(alcher_id=alcher_id, name=name, event=event, 
+                certificate_type=certificate_type, is_valid=True, is_generated=True, 
+                certificate_url=new_url, email=email, year=year)   
+    return skipped_candids
+
+
+@login_required
+def candidBulk(request):
+    if request.method == 'POST':
+        form = CSVUploadForm(request.POST, request.FILES)
+        context = {
+        'form': CSVUploadForm(),
+        }
+        if form.is_valid():
+            csv_file = request.FILES['file_CSV']
+            if not csv_file.name.endswith('.csv'):
+                messages.error(request,'ERROR!! File is not CSV type')
+                return redirect('candidBulk')
+            if csv_file.multiple_chunks():
+                messages.error(request,"ERROR!! Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000))) 
+                return redirect('candidBulk')
+            skipped_candids = readDataFromCSV(csv_file)
+            if len(skipped_candids)>0:
+                context['skipped_candids'] = skipped_candids,
+            messages.success(request, 'SUCCESS!! Data uploaded')
+
+            return render(request, 'main/candidbulk.html', context)
+    else:
+        form = CSVUploadForm()
+        return render(request, 'main/candidbulk.html', {'form':form}) 

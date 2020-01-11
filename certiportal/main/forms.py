@@ -11,6 +11,15 @@ def current_year():
 def max_value_current_year(value):
     return MaxValueValidator(current_year())(value)
 
+def validate_file_extension(value):
+    import os
+    from django.core.exceptions import ValidationError
+    ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
+    valid_extensions = ['.csv']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError(u'Unsupported file extension.')
+
+
 class CandidForm(forms.Form):
     alcher_id = forms.CharField(max_length=20, validators = [alcher_id_validator])
     name = forms.CharField(max_length=100)
@@ -25,6 +34,10 @@ class CandidForm(forms.Form):
     email = forms.EmailField(max_length=70, required = True)
     year = forms.IntegerField(
         initial=current_year(), validators=[MinValueValidator(1984), max_value_current_year])
+
+
+class CSVUploadForm(forms.Form):
+    file_CSV = forms.FileField(validators=[validate_file_extension]) 
     
 
 
