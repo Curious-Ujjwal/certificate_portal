@@ -113,11 +113,11 @@ def send_email(request , alcher_id):
         'Certificate Alcheringa: ' + str(current_year()),
          render_to_string('main/emails/mail.txt', context),
         'helpdesk@alcheringa.in',
-        ['sidjain.24.sj@gmail.com'],
+        [candid.email],
         fail_silently = False,
     )    
 
-    return render(request, 'main/mail_sent.html')
+    return render(request, 'main/mail_sent.html' , context)
     
 
 
