@@ -55,9 +55,9 @@ def isDuplicate(alcher_id, event, certificate_type, year):
 
 def generateUrl(alcher_id , year):
     last_num = 0
-    candid_certificates = candidate.objects.filter(alcher_id=alcher_id)
+    candid_certificates = candidate.objects.filter(alcher_id=alcher_id).order_by('-pk')
     if len(candid_certificates) > 0:  
-        latest_cert = candid_certificates.last()
+        latest_cert = candid_certificates.first()
         arr = latest_cert.certificate_url.split('-')
         last_num = int(arr[4])
     new_url = alcher_id + '-' + str(year) + '-' + str(last_num+1)

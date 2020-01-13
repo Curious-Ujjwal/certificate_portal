@@ -2,9 +2,11 @@ import datetime
 from django import forms
 from .choices import *
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.core.validators import RegexValidator
-alcher_id_validator = RegexValidator(r"ALC-[A-Z]{3}-[0-9]+", "Alcher ID should be of the form ALC-AAA-12")
+from django.core.validators import RegexValidator, EmailValidator
 
+
+alcher_id_validator = RegexValidator(r"ALC-[A-Z]{3}-[0-9]+", "Alcher ID should be of the form ALC-AAA-12")
+email_validator = EmailValidator()
 def current_year():
     return datetime.date.today().year
 
@@ -31,7 +33,7 @@ class CandidForm(forms.Form):
         max_length=20,
         widget=forms.Select(choices=EVENT_OPTIONS),
     )
-    email = forms.EmailField(max_length=70, required = True)
+    email = forms.EmailField(max_length=70, required = True, validators = [email_validator])
     year = forms.IntegerField(
         initial=current_year(), validators=[MinValueValidator(1984), max_value_current_year])
 
