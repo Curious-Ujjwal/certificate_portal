@@ -32,7 +32,7 @@ def certificate(request, cert_id):
 
     context = {
         'candid_name' : candid.name,
-        'candid_alcher_id' : candid.alcher_id,
+        'candid_event' : candid.event,
     }
 
     if candid.certificate_type == 'P': 
