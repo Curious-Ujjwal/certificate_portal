@@ -10,11 +10,24 @@
     background: url("C:\\Users\\Lenovo\\Desktop\\Achievement123.png");
 
 
-    @frame name_frame {          /* Content Frame */
-            left: 360pt; width: 190pt; top: 303pt; height: 40pt;
+    {% if candid_name|length <= 18 %}
+
+     @frame name_frame {          /* Content Frame */
+            left: 358pt; width: 190pt; top: 303pt; height: 40pt;
             -pdf-frame-content: name_content;
             
         }
+
+      {% else %}
+
+   @frame content_frame {          /* Content Frame */
+            left: 360pt; width: 190pt; top: 285pt; height: 50pt;
+
+            
+        }
+
+    {% endif %}
+
 
 
      @frame event_frame {          /* Content Frame */
@@ -22,6 +35,7 @@
             -pdf-frame-content: event_content;
             
         }
+       
 
 
 }
@@ -36,12 +50,22 @@
 	text-align: center;
 }
 
+body{
+
+	font-size: 14px;
+	text-align: center;
+}
+
 
 
 	</style>
 </head>
 <body>
+	{% if candid_name|length <= 18 %}
 	<div id="name_content"><h2>{{ candid_name }}</h2></div>
+	{% else %}
+	<h2>{{ candid_name }}</h2>
+	{% endif %}
 	<div id="event_content"><h2>{{candid_event}}</h2></div>
 </body>
 </html>
