@@ -37,6 +37,8 @@ class CandidForm(forms.Form):
     year = forms.IntegerField(
         initial=current_year(), validators=[MinValueValidator(1984), max_value_current_year])
 
+    is_valid = forms.BooleanField(initial=True, required=False)
+
 
 class CSVUploadForm(forms.Form):
     file_CSV = forms.FileField(validators=[validate_file_extension]) 
