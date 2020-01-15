@@ -19,6 +19,8 @@ def logoutView(request):
     logout(request)
     return render(request , 'registration/logout.html')
 
+def certificateNotFound(request):
+    return render(request , 'main/certificateNotFound.html')
 
 def certificate(request, cert_id):
     try:
@@ -27,8 +29,8 @@ def certificate(request, cert_id):
         candid = None
 
     if not candid or not candid.is_valid:
-    	# DO SOMETHING 
-    	return render(request, 'registration/index.html')
+        # DO SOMETHING 
+        return redirect('certificateNotFound')
 
     context = {
         'candid_name' : candid.name,
@@ -102,8 +104,8 @@ def send_email(request , alcher_id):
         candid = None
 
     if not candid or not candid.is_valid:
-    	#Candidate does not exist return to index.html
-    	return render(request, 'registration/index.html')
+        #Candidate does not exist return to index.html
+        return render(request, 'registration/index.html')
 
     context = {
         'candid' : candid
@@ -186,3 +188,49 @@ def candidBulk(request):
     else:
         form = CSVUploadForm()
         return render(request, 'main/candidbulk.html', {'form':form}) 
+
+
+@login_required
+def candidUpdateForm(request, tpk):
+    if request.method == 'POST':
+        form = CandidForm(request.POST)
+        if form.is_valid():
+            alcher_id = form.cleaned_data['alcher_id']
+            name = form.cleaned_data['name']
+            event = form.cleaned_data['event']
+            certificate_type = form.cleaned_data['certificate_type']
+            year = form.cleaned_data['year']
+            email = form.cleaned_data['email']
+            is_valid = form.cleaned_data['is_valid']
+
+            try:
+                obj = candidate.objects.get(pk=tpk)
+            except:
+                return redirect('candidList')
+
+            obj.alcher_id = alcher_id
+            obj.name = name
+            obj.event = event
+            obj.certificate_type = certificate_type
+            obj.year = year
+            obj.email = email
+            new_url = generateUrl(alcher_id ,year)
+            obj.certificate_url = new_url
+            obj.is_valid = is_valid
+            obj.save()
+            messages.success(request, "SUCCESS!! Candidate updated successfully")
+            return redirect('candidList')
+    else:
+        
+
+        try:
+            obj = candidate.objects.get(pk=tpk)
+        except:
+            obj=None
+            print(tpk,type(tpk))
+            return redirect('candidList')
+        print(obj.__dict__)
+        form = CandidForm(initial=obj.__dict__)
+    
+    return render(request, 'main/candidform.html', {'form':form}) 
+
