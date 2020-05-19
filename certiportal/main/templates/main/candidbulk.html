@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Candidate Bulk{% endblock %}
 
@@ -15,6 +16,8 @@
 	{{ form.as_p }}
 <button>Submit</button>
 </form>
+
+<p>The .csv file uploaded should be in this <a href="{% static 'main/sample_upload.csv' %}">format</a>. </p>
 
 {% if skipped_candids %}
 <strong>ERROR!!</strong>
