@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,11 +7,68 @@
 		@page {
     size: letter landscape;
     margin: 2cm;
+    background: url("C:\\Users\\Lenovo\\Desktop\\certPart.png");
+
+
+    {% if candid_name|length <= 18 %}
+
+     @frame name_frame {          /* Content Frame */
+            left: 345pt; width: 197pt; top: 323pt; height: 40pt;
+            -pdf-frame-content: name_content;
+          
+            
+        }
+
+      {% else %}
+
+   @frame content_frame {          /* Content Frame */
+            left: 347pt; width: 193pt; top: 305pt; height: 50pt;
+          
+
+            
+        }
+
+    {% endif %}
+
+
+
+     @frame event_frame {          /* Content Frame */
+            left: 225pt; width: 210pt; top: 352pt; height: 25pt;
+            -pdf-frame-content: event_content;
+            
+            
+        }
+       
+
+
 }
+
+#name_content{
+	font-size: 15px;
+	text-align: center;
+}
+
+#event_content{
+	font-size: 15px;
+	text-align: center;
+}
+
+body{
+
+	font-size: 14px;
+	text-align: center;
+}
+
+
+
 	</style>
 </head>
 <body>
-	Participant
-	{{candid_name}} | {{candid_alcher_id}}
+	{% if candid_name|length <= 18 %}
+	<div id="name_content"><h2>{{ candid_name }}</h2></div>
+	{% else %}
+	<h2>{{ candid_name }}</h2>
+	{% endif %}
+	<div id="event_content"><h2>{{candid_event}}</h2></div>
 </body>
 </html>

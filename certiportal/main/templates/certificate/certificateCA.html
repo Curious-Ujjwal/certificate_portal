@@ -7,21 +7,23 @@
 		@page {
     size: letter landscape;
     margin: 2cm;
-    background: url("C:\\Users\\Lenovo\\Desktop\\Achievement123.png");
+    background: url("C:\\Users\\Lenovo\\Desktop\\certCA.png");
 
 
     {% if candid_name|length <= 18 %}
 
      @frame name_frame {          /* Content Frame */
-            left: 358pt; width: 190pt; top: 303pt; height: 40pt;
+            left: 380pt; width: 200pt; top: 323pt; height: 40pt;
             -pdf-frame-content: name_content;
+            
             
         }
 
       {% else %}
 
    @frame content_frame {          /* Content Frame */
-            left: 360pt; width: 190pt; top: 285pt; height: 50pt;
+            left: 380pt; width: 203pt; top: 305pt; height: 50pt;
+            
 
             
         }
@@ -31,8 +33,9 @@
 
 
      @frame event_frame {          /* Content Frame */
-            left: 110pt; width: 150pt; top: 329pt; height: 25pt;
+            left: 110pt; width: 205pt; top: 353pt; height: 25pt;
             -pdf-frame-content: event_content;
+            
             
         }
        
@@ -41,12 +44,12 @@
 }
 
 #name_content{
-	font-size: 14px;
+	font-size: 15px;
 	text-align: center;
 }
 
 #event_content{
-	font-size: 14px;
+	font-size: 15px;
 	text-align: center;
 }
 
