@@ -20,7 +20,7 @@ EVENT_OPTIONS = [
         ('Electic Heels', 'Electic Heels'),
         ('Step Up', 'Step Up'),
         ('Dancing Duo', 'Dancing Duo'),
-        ('So U Think U Can Dance', 'So U Think U Can Dance'),
+        ('So You Think You Can Dance', 'So You Think You Can Dance'),
         ('Navras', 'Navras'),
         ('Raga High', 'Raga High'),
         ('Unplugged', 'Unplugged'),
