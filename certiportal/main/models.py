@@ -11,7 +11,7 @@ class candidate(models.Model):
     is_generated = models.BooleanField(default = None)
     is_valid = models.BooleanField(default = True)
     certificate_url = models.CharField(max_length=255 , blank=True)
-    event = models.CharField(max_length=30, choices=EVENT_OPTIONS, default='', blank = False)
+    event = models.CharField(max_length=50, choices=EVENT_OPTIONS, default='', blank = False)
     year = models.IntegerField(default=2020)
     email = models.EmailField(max_length=70, blank = False)
     def __str__(self):

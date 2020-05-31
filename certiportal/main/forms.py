@@ -30,7 +30,7 @@ class CandidForm(forms.Form):
         widget=forms.Select(choices=CERTIFICATE_OPTIONS),
     )
     event = forms.CharField(
-        max_length=20,
+        max_length=50,
         widget=forms.Select(choices=EVENT_OPTIONS),
     )
     email = forms.EmailField(max_length=70, required = True, validators = [email_validator])

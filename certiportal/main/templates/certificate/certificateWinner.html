@@ -7,7 +7,7 @@
 		@page {
     size: letter landscape;
     margin: 2cm;
-    background: url("C:\\Users\\Curious-Ujjwal\\Desktop\\certWinner.png");
+    background: url("C:\\Users\\Lenovo\\Desktop\\certWinner.png");
 
 
     {% if candid_name|length <= 18 %}
@@ -15,6 +15,7 @@
      @frame name_frame {          /* Content Frame */
             left: 345pt; width: 197pt; top: 323pt; height: 40pt;
             -pdf-frame-content: name_content;
+            -pdf-frame-border: 1;
             
             
         }
@@ -23,6 +24,7 @@
 
    @frame content_frame {          /* Content Frame */
             left: 347pt; width: 193pt; top: 305pt; height: 50pt;
+            -pdf-frame-border: 1;
            
 
             
@@ -30,15 +32,26 @@
 
     {% endif %}
 
+    {% if candid_event|length <= 24 %}
+
 
 
      @frame event_frame {          /* Content Frame */
             left: 130pt; width: 155pt; top: 352pt; height: 25pt;
             -pdf-frame-content: event_content;
+            /*-pdf-frame-border: 1;*/
             
             
         }
-       
+
+    {% else %}
+
+       @frame event_frame {          /* Content Frame */
+            left: 90pt; width: 200pt; top: 352pt; height: 25pt;
+            /*-pdf-frame-border: 1;*/
+          }
+
+    {% endif %}
 
 
 }
@@ -69,6 +82,10 @@ body{
 	{% else %}
 	<h2>{{ candid_name }}</h2>
 	{% endif %}
+  {% if candid_event|length <= 24 %}
 	<div id="event_content"><h2>{{candid_event}}</h2></div>
+  {% else %}
+  <h2>{{ candid_event }} </h2>
+  {% endif %}
 </body>
 </html>
