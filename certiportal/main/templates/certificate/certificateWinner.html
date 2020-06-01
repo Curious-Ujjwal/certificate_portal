@@ -13,9 +13,9 @@
     {% if candid_name|length <= 18 %}
 
      @frame name_frame {          /* Content Frame */
-            left: 345pt; width: 197pt; top: 323pt; height: 40pt;
+            left: 345pt; width: 197pt; top: 323pt; height: 30pt;
             -pdf-frame-content: name_content;
-            -pdf-frame-border: 1;
+            
             
             
         }
@@ -24,7 +24,7 @@
 
    @frame content_frame {          /* Content Frame */
             left: 347pt; width: 193pt; top: 305pt; height: 50pt;
-            -pdf-frame-border: 1;
+            
            
 
             
@@ -54,6 +54,12 @@
     {% endif %}
 
 
+    @frame position_frame {          /* Content Frame */
+            left: 395pt; width: 60pt; top: 353pt; height: 30pt;
+            -pdf-frame-content: position_content;
+            
+
+}
 }
 
 #name_content{
@@ -64,6 +70,11 @@
 #event_content{
 	font-size: 15px;
 	text-align: center;
+}
+
+#position_content{
+  font-size: 15px;
+  text-align: center;
 }
 
 body{
@@ -86,6 +97,13 @@ body{
 	<div id="event_content"><h2>{{candid_event}}</h2></div>
   {% else %}
   <h2>{{ candid_event }} </h2>
+  {% endif %}
+  {% if candid_position == 1 %}
+  <div id="position_content"><h2>{{ candid_position }}st</h2></div>
+  {% elif candid_position == 2 %}
+  <div id="position_content"><h2>{{ candid_position }}nd</h2></div>
+  {% elif candid_position == 3 %}
+  <div id="position_content"><h2>{{ candid_position }}rd</h2></div>
   {% endif %}
 </body>
 </html>

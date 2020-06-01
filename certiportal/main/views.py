@@ -35,6 +35,8 @@ def certificate(request, cert_id):
     context = {
         'candid_name' : candid.name,
         'candid_event' : candid.event,
+        'candid_position': candid.position,
+        'candid_college' : candid.college,
     }
 
     if candid.certificate_type == 'P': 
@@ -211,6 +213,8 @@ def candidUpdateForm(request, tpk):
             year = form.cleaned_data['year']
             email = form.cleaned_data['email']
             is_valid = form.cleaned_data['is_valid']
+            position = form.cleaned_data['position']
+            college = form.cleaned_data['college']
 
             try:
                 obj = candidate.objects.get(pk=tpk)
@@ -226,6 +230,8 @@ def candidUpdateForm(request, tpk):
             new_url = generateUrl(alcher_id ,year)
             obj.certificate_url = new_url
             obj.is_valid = is_valid
+            obj.position = position
+            obj.college = college
             obj.save()
             messages.success(request, "SUCCESS!! Candidate updated successfully")
             return redirect('candidList')
