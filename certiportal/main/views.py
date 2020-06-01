@@ -141,16 +141,23 @@ def readDataFromCSV(csv_file):
         alcher_id = fields[0].strip()        
         name = fields[1].strip()
         certificate_type = fields[2].strip()  
-        event = fields[3].strip()
-        year = fields[4].strip()
-        email = fields[5].strip()
+        position = fields[3].strip()
+        
+        college = fields[4].strip()
+        event = fields[5].strip()
+        year = fields[6].strip()
+        email = fields[7].strip()
 
         try:
+            if position:
+                position = int(position)
+            else:
+                position = 1
             email_validator = EmailValidator()
             alcher_id_validator = RegexValidator(r"ALC-[A-Z]{3}-[0-9]+")
             alcher_id_validator(alcher_id)
             email_validator(email)
-        except ValidationError:
+        except (ValidationError, ValueError) as e :
             skipped_candids.append((alcher_id,event))
             continue
 
@@ -161,8 +168,8 @@ def readDataFromCSV(csv_file):
         if not isDuplicate(alcher_id, event, certificate_type, year):
             new_url = generateUrl(alcher_id, year)
             candidate.objects.create(alcher_id=alcher_id, name=name, event=event, 
-                certificate_type=certificate_type, is_valid=True, is_generated=True, 
-                certificate_url=new_url, email=email, year=year)   
+                    certificate_type=certificate_type, position=position, college=college, is_valid=True, is_generated=True, 
+                    certificate_url=new_url, email=email, year=year) 
     return skipped_candids
 
 

@@ -9,6 +9,8 @@
 		<th>ALCHER_ID</th>
 		<th>NAME</th>
 		<th>CERTIFICATE_TYPE</th>
+		<th>Position</th>
+		<th>College</th>
 		<th>EVENT</th>
 		<th>IS_VALID</th>
 	</thead>
@@ -18,8 +20,10 @@
 			<td><a href="{% url 'candidUpdateForm' candid.pk %}" title="Edit">{{candid.alcher_id}}</a></td>
 			<td>{{candid.name}}</td>
 			<td>{{candid.get_certificate_type_display}}</td>
+			<td>{{candid.position}}</td>
+			<td>{{candid.college}}</td>
 			{% if candid.certificate_type == 'CA' %}
-			<td> -- </td>
+			<td></td>
 			{% else %}
 			<td>{{candid.event}}</td>
 			{% endif %}
