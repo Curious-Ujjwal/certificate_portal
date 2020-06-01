@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.index , name="index"),
     path('candidform', views.candidForm , name="candidForm"),
     path('candidlist', views.candidList , name="candidList"),
+    path('candidlist/filter/<int:id>', views.candidListFilter , name="candidListFilter"),
     path('candidbulk', views.candidBulk , name="candidBulk"),
     path('accounts/logout/', views.logoutView , name="logoutView"),
     path('cnotfound', views.certificateNotFound , name="certificateNotFound"),

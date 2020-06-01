@@ -243,3 +243,10 @@ def candidUpdateForm(request, tpk):
     
     return render(request, 'main/candidform.html', {'form':form}) 
 
+def candidListFilter(request, id):
+    event = EVENT_OPTIONS[id][0]
+    candids = candidate.objects.filter(year=current_year(), event = event)
+    context = {
+        'candids': candids,
+    }
+    return render(request, 'main/candidlist.html', context)
