@@ -75,12 +75,14 @@ def candidForm(request):
             name = form.cleaned_data['name']
             event = form.cleaned_data['event']
             certificate_type = form.cleaned_data['certificate_type']
+            position = form.cleaned_data['position']
+            college = form.cleaned_data['college']
             year = form.cleaned_data['year']
             email = form.cleaned_data['email']
             if not isDuplicate(alcher_id, event, certificate_type, year):
                 new_url = generateUrl(alcher_id , year)
                 candidate.objects.create(alcher_id=alcher_id, name=name, event=event, 
-                    certificate_type=certificate_type, is_valid=True, is_generated=True, 
+                    certificate_type=certificate_type, position=position, college=college, is_valid=True, is_generated=True, 
                     certificate_url=new_url, email=email, year=year)
             return redirect('candidList')
     else:

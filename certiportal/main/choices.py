@@ -59,3 +59,4 @@ EVENT_OPTIONS = [
         ('Comic Quiz', 'Comic Quiz'),
         ('India Quiz', 'India Quiz'),
 ]
+

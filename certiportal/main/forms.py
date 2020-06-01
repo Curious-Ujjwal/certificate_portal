@@ -29,6 +29,9 @@ class CandidForm(forms.Form):
         max_length=2,
         widget=forms.Select(choices=CERTIFICATE_OPTIONS),
     )
+    position = forms.IntegerField(
+        initial=1, validators=[MinValueValidator(1), MaxValueValidator(3)])
+    college = forms.CharField(max_length=255)
     event = forms.CharField(
         max_length=50,
         widget=forms.Select(choices=EVENT_OPTIONS),
