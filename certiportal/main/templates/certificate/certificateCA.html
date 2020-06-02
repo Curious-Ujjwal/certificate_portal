@@ -7,14 +7,14 @@
 		@page {
     size: letter landscape;
     margin: 2cm;
-    background: url("C:\\Users\\Curious-Ujjwal\\Desktop\\certCA.png");
+    background: url("C:\\Users\\Lenovo\\Desktop\\certCA.png");
 
 
     {% if candid_name|length <= 18 %}
 
      @frame name_frame {          /* Content Frame */
             left: 380pt; width: 200pt; top: 323pt; height: 40pt;
-            -pdf-frame-content: name_content;
+            
             
             
         }
@@ -30,16 +30,28 @@
 
     {% endif %}
 
+    {% if candid_college|length <= 46 %}
 
 
-     @frame event_frame {          /* Content Frame */
-            left: 110pt; width: 205pt; top: 353pt; height: 25pt;
-            -pdf-frame-content: event_content;
+    @frame college_frame {          /* Content Frame */
+            left: 45pt; width: 280pt; top: 353pt; height: 45pt;
+            -pdf-frame-content: college_content;
+            
             
             
         }
-       
 
+    {% else %}
+
+     @frame college_frame {          /* Content Frame */
+            left: 45pt; width: 280pt; top: 337pt; height: 45pt;
+            -pdf-frame-content: college_content;
+            
+            
+            
+        }
+
+    {% endif %}
 
 }
 
@@ -48,14 +60,25 @@
 	text-align: center;
 }
 
-#event_content{
-	font-size: 15px;
+{% if candid_college|length <= 30 %}
+
+#college_content{
+	font-size: 14px;
 	text-align: center;
 }
 
+{% else %}
+
+#college_content{
+	font-size: 13px;
+	text-align: center;
+}
+
+{% endif %}
+
 body{
 
-	font-size: 14px;
+	font-size: 15px;
 	text-align: center;
 }
 
@@ -69,6 +92,6 @@ body{
 	{% else %}
 	<h2>{{ candid_name }}</h2>
 	{% endif %}
-	<div id="event_content"><h2>{{candid_event}}</h2></div>
+	<div id="college_content"><h2>{{candid_college}}</h2></div>
 </body>
 </html>

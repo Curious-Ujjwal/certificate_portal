@@ -3,12 +3,19 @@
 {% block title %}Candidate List{% endblock %}
 
 {% block content %}
+	
+	<label for="events_id">Choose an Event:</label>
 
+<select name="events_id" id="events_id" onChange="window.location.href=this.value">
+  
+</select>
 <table rules="all">
 	<thead>
 		<th>ALCHER_ID</th>
 		<th>NAME</th>
 		<th>CERTIFICATE_TYPE</th>
+		<th>Position</th>
+		<th>College</th>
 		<th>EVENT</th>
 		<th>IS_VALID</th>
 	</thead>
@@ -18,8 +25,10 @@
 			<td><a href="{% url 'candidUpdateForm' candid.pk %}" title="Edit">{{candid.alcher_id}}</a></td>
 			<td>{{candid.name}}</td>
 			<td>{{candid.get_certificate_type_display}}</td>
+			<td>{{candid.position}}</td>
+			<td>{{candid.college}}</td>
 			{% if candid.certificate_type == 'CA' %}
-			<td> -- </td>
+			<td></td>
 			{% else %}
 			<td>{{candid.event}}</td>
 			{% endif %}
@@ -40,7 +49,77 @@
 	<a href="{% url 'candidBulk' %}"><button>
 		Add Candidates through CSV
 	</button></a>
+
 <script>
-	
-</script>
+		EVENT_OPTIONS = [
+' None ',
+' Houte Couture ',
+' States of Dress ',
+' Glamour Nova ',
+' Rock-O-Phonix ',
+' Mr. Alcheringa ',
+' Crossfade ',
+' Alcher Got Talent ',
+' Rap Battle ',
+' Theatrix ',
+' Monodrama ',
+' Halla Bol ',
+' Electic Heels ',
+' Step Up ',
+' Dancing Duo ',
+' So You Think You Can Dance ',
+' Navras ',
+' Raga High ',
+' Unplugged ',
+' Voice of Alcheringa ',
+' Choir ',
+' Just A Minute ',
+' Mehfil - a - Alcheringa ',
+' Parliamentry Debate ',
+' Poetry Slam - Hindi ',
+' Poetry Slam - English ',
+' Zephyr ',
+' Face Art ',
+' Ink The Tee ',
+' Graffiti ',
+' Clay Modelling ',
+' Live Sketching ',
+' Rangoli ',
+' Who is it? ',
+' 5 on 5 football ',
+' Arm Wrestling ',
+' 3 on 3 Basketball ',
+' Gully Cricket ',
+' 3 on 3 Volleyball ',
+" Director's Cut ",
+' Musically ',
+' Snap Thrillz ',
+' Custom Brush ',
+' Doodle Pad ',
+' Alcher Diva/Hunk ',
+' Xpressions ',
+' Parliamentry Debate ',
+' General Quiz ',
+' Business Quiz ',
+' Sports Quiz ',
+' Bollywood Quiz ',
+' Comic Quiz ',
+' India Quiz ',
+]
+	let sel = document.getElementById('events_id');
+	let child = document.createElement('option');
+	var att = document.createAttribute("value"); 
+	att.value = "http://127.0.0.1:8000/candidlist";                           // Set the value of the class attribute
+	child.setAttributeNode(att);    
+	child.text = "All";
+	sel.appendChild(child);
+	for(let i = 1;i<EVENT_OPTIONS.length;i++) {
+		let child = document.createElement('option');
+		var att = document.createAttribute("value"); 
+		att.value = "http://127.0.0.1:8000/candidlist/filter/"+i;                           // Set the value of the class attribute
+		child.setAttributeNode(att);    
+		child.text = EVENT_OPTIONS[i];
+		sel.appendChild(child);
+	}
+	</script>
 {% endblock %}

@@ -20,8 +20,8 @@
 <p>The .csv file uploaded should be in this <a href="{% static 'main/sample_upload.csv' %}">format</a>. </p>
 
 {% if skipped_candids %}
-<strong>ERROR!!</strong>
-<p>These rows were not added</p>
+<strong>ALERT!!</strong>
+<p>These rows were not added, it may be because the data is not in the expected format or the data is duplicate</p>
 <ul>
 {% for candids in skipped_candids %}
 {% for candid in candids %}

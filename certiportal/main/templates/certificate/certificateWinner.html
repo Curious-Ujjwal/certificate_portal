@@ -7,14 +7,15 @@
 		@page {
     size: letter landscape;
     margin: 2cm;
-    background: url("C:\\Users\\Curious-Ujjwal\\Desktop\\certWinner.png");
+    background: url("C:\\Users\\Lenovo\\Desktop\\certWinner.png");
 
 
     {% if candid_name|length <= 18 %}
 
      @frame name_frame {          /* Content Frame */
-            left: 345pt; width: 197pt; top: 323pt; height: 40pt;
+            left: 345pt; width: 197pt; top: 323pt; height: 30pt;
             -pdf-frame-content: name_content;
+            
             
             
         }
@@ -23,6 +24,7 @@
 
    @frame content_frame {          /* Content Frame */
             left: 347pt; width: 193pt; top: 305pt; height: 50pt;
+            
            
 
             
@@ -30,17 +32,34 @@
 
     {% endif %}
 
+    {% if candid_event|length <= 24 %}
+
 
 
      @frame event_frame {          /* Content Frame */
             left: 130pt; width: 155pt; top: 352pt; height: 25pt;
             -pdf-frame-content: event_content;
+            /*-pdf-frame-border: 1;*/
             
             
         }
-       
+
+    {% else %}
+
+       @frame event_frame {          /* Content Frame */
+            left: 90pt; width: 200pt; top: 352pt; height: 25pt;
+            /*-pdf-frame-border: 1;*/
+          }
+
+    {% endif %}
 
 
+    @frame position_frame {          /* Content Frame */
+            left: 395pt; width: 60pt; top: 353pt; height: 30pt;
+            -pdf-frame-content: position_content;
+            
+
+}
 }
 
 #name_content{
@@ -51,6 +70,11 @@
 #event_content{
 	font-size: 15px;
 	text-align: center;
+}
+
+#position_content{
+  font-size: 15px;
+  text-align: center;
 }
 
 body{
@@ -69,6 +93,17 @@ body{
 	{% else %}
 	<h2>{{ candid_name }}</h2>
 	{% endif %}
+  {% if candid_event|length <= 24 %}
 	<div id="event_content"><h2>{{candid_event}}</h2></div>
+  {% else %}
+  <h2>{{ candid_event }} </h2>
+  {% endif %}
+  {% if candid_position == 1 %}
+  <div id="position_content"><h2>{{ candid_position }}st</h2></div>
+  {% elif candid_position == 2 %}
+  <div id="position_content"><h2>{{ candid_position }}nd</h2></div>
+  {% elif candid_position == 3 %}
+  <div id="position_content"><h2>{{ candid_position }}rd</h2></div>
+  {% endif %}
 </body>
 </html>
