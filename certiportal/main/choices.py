@@ -55,7 +55,7 @@ EVENT_OPTIONS = [
         ('General Quiz', 'General Quiz'),
         ('Business Quiz', 'Business Quiz'),
         ('Sports Quiz', 'Sports Quiz'),
-        ('Bollywood Quiz', 'Bollywood Quiz'),
+        ('Entertainment Quiz', 'Entertainment Quiz'),
         ('Comic Quiz', 'Comic Quiz'),
         ('India Quiz', 'India Quiz'),
 ]
