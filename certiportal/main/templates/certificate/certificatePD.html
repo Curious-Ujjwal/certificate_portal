@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Certificate</title>
+	<style>
+		@page {
+    size: letter landscape;
+    margin: 2cm;
+    background: url("C:\\Users\\Lenovo\\Desktop\\certPD.png");
+
+
+    {% if candid_name|length <= 20 %}
+
+     @frame name_frame {          /* Content Frame */
+            left: 325pt; width: 165pt; top: 323pt; height: 40pt;
+            -pdf-frame-content: name_content;
+            }
+
+      {% else %}
+
+   @frame name_frame {          /* Content Frame */
+            left: 323pt; width: 170pt; top: 307pt; height: 50pt;
+            -pdf-frame-content: name_content;
+        }
+
+    {% endif %}
+
+}
+
+{% if candid_name|length <= 20 %}
+
+#name_content{
+	font-size: 16px;
+	text-align: center;
+}
+
+{% else %}
+
+#name_content{
+	font-size: 13px;
+	text-align: center;
+}
+
+{% endif %}
+
+
+
+	</style>
+</head>
+<body>
+	<div id="name_content"><h2>{{ candid_name }}</h2></div>
+</body>
+</html>

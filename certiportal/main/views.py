@@ -10,6 +10,8 @@ from django.contrib import messages
 from .choices import *
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator, EmailValidator
+from post_office import mail
+import os
 
 # Create your views here.
 def index(request):
@@ -38,7 +40,8 @@ def certificate(request, cert_id):
         'candid_position': candid.position,
         'candid_college' : candid.college,
     }
-
+    if candid.event == 'Parliamentry Debate':
+        return Render.render('certificate/certificatePD.html',context)
     if candid.certificate_type == 'P': 
         return Render.render('certificate/certificateParticipation.html', context)
     elif candid.certificate_type == 'CA': 
@@ -64,7 +67,7 @@ def generateUrl(alcher_id , year):
         latest_cert = candid_certificates.first()
         arr = latest_cert.certificate_url.split('-')
         last_num = int(arr[4])
-    new_url = alcher_id + '-' + str(year) + '-' + str(last_num+1)
+    new_url = alcher_id + '-' + str(year) + '-' + str(last_num+1) + '-' + os.urandom(8).hex()
     return new_url
 
 
@@ -95,8 +98,10 @@ def candidForm(request):
 @login_required
 def candidList(request):
     candids = candidate.objects.filter(year=current_year())
+    event_name='none'
     context = {
         'candids': candids,
+        'event_name': event_name,
     }
     return render(request, 'main/candidlist.html', context)
 
@@ -118,7 +123,7 @@ def send_email(request , alcher_id):
     send_mail(
         'Certificate Alcheringa: ' + str(current_year()),
          render_to_string('main/emails/mail.txt', context),
-        'helpdesk@alcheringa.in',
+        'publicrelations@alcheringa.in',
         [candid.email],
         fail_silently = False,
     )    
@@ -254,5 +259,73 @@ def candidListFilter(request, id):
     candids = candidate.objects.filter(year=current_year(), event = event)
     context = {
         'candids': candids,
+        'event_name': event,
     }
     return render(request, 'main/candidlist.html', context)
+
+
+
+from django.core.mail import send_mass_mail
+
+@login_required
+def massmail(request,event_name):
+    if event_name == 'none':
+        candids = candidate.objects.filter(year=current_year())
+        context = {'candids': candids,
+        'event_name' : 'none',}
+        return render(request, 'main/candidlist.html', context)
+
+    candids = candidate.objects.filter(year=current_year(), event=event_name)
+    message_list = []
+    
+    for candid in candids:
+        context = {'candid' : candid, }
+        subject = 'Certificate Alcheringa: ' + str(current_year())
+        content = render_to_string('main/emails/mail.txt', context)
+        sender = 'publicrelations@alcheringa.in'
+        recipient = [candid.email]
+        message  = (subject, content , sender , recipient)
+        message_list.append(message)
+    
+    message_tuple = tuple(message_list)
+    send_mass_mail(message_tuple, fail_silently=False)
+    candids = candidate.objects.filter(year=current_year())
+    context = {
+        'candids': candids,
+        'event_name' : 'none'
+    }
+    return render(request, 'main/candidlist.html', context)
+
+
+
+
+
+@login_required
+def calist(request):
+    candids = candidate.objects.filter(year=current_year(), certificate_type = 'CA' )
+    context = {
+        'candids': candids,
+        }
+    return render(request, 'main/calist.html', context)
+
+@login_required
+def massmailca(request):
+    candids = candidate.objects.filter(year=current_year(), certificate_type = 'CA')
+    message_list = []
+    
+    for candid in candids:
+        context = {'candid' : candid, }
+        subject = 'Certificate Alcheringa: ' + str(current_year())
+        content = render_to_string('main/emails/mail.txt', context)
+        sender = 'publicrelations@alcheringa.in'
+        recipient = [candid.email]
+        message  = (subject, content , sender , recipient)
+        message_list.append(message)
+    
+    message_tuple = tuple(message_list)
+    send_mass_mail(message_tuple, fail_silently=False)
+    candids = candidate.objects.filter(year=current_year(), certificate_type = 'CA')
+    context = {
+        'candids': candids,
+    }
+    return render(request, 'main/calist.html', context)

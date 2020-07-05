@@ -3,12 +3,23 @@
 {% block title %}Candidate List{% endblock %}
 
 {% block content %}
+
+<br>
+<a href = "{% url 'candidList' %}"><button>View all candidates</button></a>
+<a href = "{% url 'index' %}"><button> Home </button></a>
+<br><br>
 	
 	<label for="events_id">Choose an Event:</label>
 
 <select name="events_id" id="events_id" onChange="window.location.href=this.value">
   
 </select>
+<a href= "{% url 'calist' %}"><button>Campus Ambassadors list</button> </a>
+<br><br>
+
+<a href= "{% url 'massmail' event_name %}"><button>SEND MAIL TO ALL PARTICIPANTS IN {{ event_name }}</button></a>
+<br>
+<br>
 <table rules="all">
 	<thead>
 		<th>ALCHER_ID</th>
@@ -18,6 +29,7 @@
 		<th>College</th>
 		<th>EVENT</th>
 		<th>IS_VALID</th>
+		<th>EMAIL</th>
 	</thead>
 	<tbody>
 		{% for candid in candids %}
@@ -33,9 +45,10 @@
 			<td>{{candid.event}}</td>
 			{% endif %}
 			<td>{{candid.is_valid}}</td>
+			<td>{{candid.email}}</td>
 			{% if candid.is_valid and candid.is_generated %}
 			<td><a href="{% url 'send_email' candid.alcher_id %}"><button>Send Email</button></a></td>
-			<td><a href="{% url 'certificate' candid.certificate_url %}"><button>View Certificate</button></a></td>
+			<td><a href="{% url 'certificate' candid.certificate_url %}" target="_blank"><button>View Certificate</button></a></td>
 			{% endif %}
 		</tr>
 	{% endfor %}
@@ -49,6 +62,9 @@
 	<a href="{% url 'candidBulk' %}"><button>
 		Add Candidates through CSV
 	</button></a>
+
+	<a href = "{% url 'candidList' %}"><button>View all candidates</button></a>
+	<a href = "{% url 'index' %}"><button> Home </button></a>
 
 <script>
 		EVENT_OPTIONS = [

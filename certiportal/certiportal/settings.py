@@ -14,6 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# STATIC_DIR = os.path.join(BASE_DIR,"main/static")
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +26,7 @@ SECRET_KEY = 'h91!s0hm1!xw*)&gt8=bhafxgmzbysl%p84&6c#c014jw7@$k2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'crispy_forms'
+    'post_office',
+    'crispy_forms',
 ]
 
 
@@ -131,10 +133,14 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/logout/'
 
 
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Email host settings
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.sendgrid.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER  = "helpdesk@alcheringa.in" #### Enter your host username here
-EMAIL_HOST_PASSWORD = ""   #### Enter your password here
+EMAIL_HOST_USER  = "apikey" #### Enter your host username here
+EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+DEFAULT_FROM_EMAIL = "publicrelations@alcheringa.in"

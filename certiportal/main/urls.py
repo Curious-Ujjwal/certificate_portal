@@ -11,6 +11,9 @@ urlpatterns = [
     path('cnotfound', views.certificateNotFound , name="certificateNotFound"),
     path('mail_sent/<slug:alcher_id>', views.send_email , name="send_email"),
     path('candidupdate/<int:tpk>', views.candidUpdateForm , name="candidUpdateForm"),
-    re_path(r'^certificate/(?P<cert_id>ALC-[A-Z]{3}-[0-9]+-20[0-9]{2}-[0-9]+)/$', views.certificate , name="certificate"),
+    re_path(r'^certificate/(?P<cert_id>ALC-[A-Z]{3}-[0-9]+-20[0-9]{2}-[0-9]+-[0-9A-Za-z]{16})/$', views.certificate , name="certificate"),
+    path('massmail/<str:event_name>', views.massmail, name="massmail"),
+    path('calist', views.calist, name="calist"),
+    path('massmailca/', views.massmailca, name="massmailca"),
 ]
 
