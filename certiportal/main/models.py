@@ -16,6 +16,7 @@ class candidate(models.Model):
     event = models.CharField(max_length=50, choices=EVENT_OPTIONS, default='', blank = False)
     year = models.IntegerField(default=2020)
     email = models.EmailField(max_length=70, blank = False)
+    special_achievement = models.CharField(max_length=255 , default='', blank=True)
     def __str__(self):
         return self.name
 
@@ -23,7 +24,7 @@ class candidate(models.Model):
 class CandidForm(ModelForm):
     class Meta:
         model = candidate
-        fields = ['alcher_id', 'name', 'certificate_type', 'event', 'email' ,'year']
+        fields = ['alcher_id', 'name', 'certificate_type', 'event', 'email' ,'year', 'special_achievement' ]
 
 
 

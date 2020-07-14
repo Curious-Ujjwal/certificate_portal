@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Certificate</title>
+  <style>
+    @page {
+    size: letter landscape;
+    margin: 2cm;
+    background: url("https://alcheringacertificates.s3.amazonaws.com/certSA.png");
+
+
+    {% if candid_name|length <= 18 %}
+
+     @frame name_frame {          /* Content Frame */
+            left: 345pt; width: 197pt; top: 323pt; height: 30pt;
+            -pdf-frame-content: name_content;
+            /*-pdf-frame-border: 1;*/
+            
+            
+        }
+
+      {% else %}
+
+   @frame content_frame {          /* Content Frame */
+            left: 347pt; width: 193pt; top: 305pt; height: 50pt;
+            
+            
+           
+
+            
+        }
+
+    {% endif %}
+
+    {% if candid_event|length <= 24 %}
+
+
+
+     @frame event_frame {          /* Content Frame */
+            left: 387pt; width: 155pt; top: 352pt; height: 25pt;
+            -pdf-frame-content: event_content;
+            
+            
+            
+        }
+
+    {% else %}
+
+       @frame event_frame {          /* Content Frame */
+            left: 367pt; width: 200pt; top: 352pt; height: 25pt;
+            
+          }
+
+    {% endif %}
+
+
+    @frame achievement_frame {          /* Content Frame */
+            left: 90pt; width: 210pt; top: 351pt; height: 30pt;
+            -pdf-frame-content: position_content;
+            
+            
+
+}
+}
+
+#name_content{
+  font-size: 15px;
+  text-align: center;
+}
+
+#event_content{
+  font-size: 15px;
+  text-align: center;
+}
+
+#achievement_content{
+  font-size: 15px;
+  text-align: center;
+}
+
+body{
+
+  font-size: 14px;
+  text-align: center;
+}
+
+
+
+  </style>
+</head>
+<body>
+  {% if candid_name|length <= 18 %}
+  <div id="name_content"><h2>{{ candid_name }}</h2></div>
+  {% else %}
+  <h2>{{ candid_name }}</h2>
+  {% endif %}
+  {% if candid_event|length <= 24 %}
+  <div id="event_content"><h2>{{candid_event}}</h2></div>
+  {% else %}
+  <h2>{{ candid_event }} </h2>
+  {% endif %}
+  <div id="position_content"><h2>{{ candid_achievement }}</h2></div>
+</body>
+</html>

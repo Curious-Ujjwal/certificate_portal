@@ -39,10 +39,13 @@ def certificate(request, cert_id):
         'candid_event' : candid.event,
         'candid_position': candid.position,
         'candid_college' : candid.college,
+        'candid_achievement' : candid.special_achievement,
     }
     if candid.event == 'Parliamentry Debate':
         return Render.render('certificate/certificatePD.html',context)
-    if candid.certificate_type == 'P': 
+    elif candid.certificate_type == 'SA':
+        return Render.render('certificate/certificateSA.html',context)
+    elif candid.certificate_type == 'P': 
         return Render.render('certificate/certificateParticipation.html', context)
     elif candid.certificate_type == 'CA': 
         return Render.render('certificate/certificateCA.html', context)
@@ -84,11 +87,12 @@ def candidForm(request):
             college = form.cleaned_data['college']
             year = form.cleaned_data['year']
             email = form.cleaned_data['email']
+            special_achievement = form.cleaned_data['special_achievement']
             if not isDuplicate(alcher_id, event, certificate_type, year):
                 new_url = generateUrl(alcher_id , year)
                 candidate.objects.create(alcher_id=alcher_id, name=name, event=event, 
                     certificate_type=certificate_type, position=position, college=college, is_valid=True, is_generated=True, 
-                    certificate_url=new_url, email=email, year=year)
+                    certificate_url=new_url, email=email, year=year, special_achievement = special_achievement, )
             return redirect('candidList')
     else:
         form = CandidForm()
@@ -120,14 +124,24 @@ def send_email(request , alcher_id):
         'candid' : candid
     }
 
+    if candid.event == 'Parliamentry Debate':
+        content = render_to_string('main/emails/mailPD.txt', context)
+    elif candid.certificate_type == 'CA':
+        content = render_to_string('main/emails/mailca.txt', context)
+    elif candid.certificate_type == 'P':
+        content = render_to_string('main/emails/mailparticipant.txt', context)
+    elif candid.certificate_type == 'W':
+        content = render_to_string('main/emails/mailwinner.txt', context)
+    elif candid.certificate_type == 'SA':
+        content = render_to_string('main/emails/mailsa.txt', context)
+
     send_mail(
         'Certificate Alcheringa: ' + str(current_year()),
-         render_to_string('main/emails/mail.txt', context),
+        mailcontent,
         'publicrelations@alcheringa.in',
         [candid.email],
         fail_silently = False,
-    )    
-
+        )
     return render(request, 'main/mail_sent.html' , context)
     
 
@@ -220,6 +234,7 @@ def candidUpdateForm(request, tpk):
             is_valid = form.cleaned_data['is_valid']
             position = form.cleaned_data['position']
             college = form.cleaned_data['college']
+            special_achievement = form.cleaned_data['special_achievement']
 
             try:
                 obj = candidate.objects.get(pk=tpk)
@@ -237,6 +252,7 @@ def candidUpdateForm(request, tpk):
             obj.is_valid = is_valid
             obj.position = position
             obj.college = college
+            obj.special_achievement = special_achievement
             obj.save()
             messages.success(request, "SUCCESS!! Candidate updated successfully")
             return redirect('candidList')
@@ -247,9 +263,9 @@ def candidUpdateForm(request, tpk):
             obj = candidate.objects.get(pk=tpk)
         except:
             obj=None
-            print(tpk,type(tpk))
+            # print(tpk,type(tpk))
             return redirect('candidList')
-        print(obj.__dict__)
+        # print(obj.__dict__)
         form = CandidForm(initial=obj.__dict__)
     
     return render(request, 'main/candidform.html', {'form':form}) 
@@ -281,7 +297,15 @@ def massmail(request,event_name):
     for candid in candids:
         context = {'candid' : candid, }
         subject = 'Certificate Alcheringa: ' + str(current_year())
-        content = render_to_string('main/emails/mail.txt', context)
+        if candid.event == 'Parliamentry Debate':
+            content = render_to_string('main/emails/mailPD.txt', context)
+        elif candid.certificate_type == 'P':
+            content = render_to_string('main/emails/mailparticipant.txt', context)
+        elif candid.certificate_type == 'W':
+            content = render_to_string('main/emails/mailwinner.txt', context)
+        elif candid.certificate_type == 'SA':
+            content = render_to_string('main/emails/mailsa.txt', context)
+
         sender = 'publicrelations@alcheringa.in'
         recipient = [candid.email]
         message  = (subject, content , sender , recipient)
@@ -316,7 +340,7 @@ def massmailca(request):
     for candid in candids:
         context = {'candid' : candid, }
         subject = 'Certificate Alcheringa: ' + str(current_year())
-        content = render_to_string('main/emails/mail.txt', context)
+        content = render_to_string('main/emails/mailca.txt', context)
         sender = 'publicrelations@alcheringa.in'
         recipient = [candid.email]
         message  = (subject, content , sender , recipient)
@@ -329,3 +353,36 @@ def massmailca(request):
         'candids': candids,
     }
     return render(request, 'main/calist.html', context)
+
+
+
+@login_required
+def salist(request):
+    candids = candidate.objects.filter(year=current_year(), certificate_type = 'SA' )
+    context = {
+        'candids': candids,
+        }
+    return render(request, 'main/salist.html', context)
+
+
+@login_required
+def massmailsa(request):
+    candids = candidate.objects.filter(year=current_year(), certificate_type = 'SA')
+    message_list = []
+    
+    for candid in candids:
+        context = {'candid' : candid, }
+        subject = 'Certificate Alcheringa: ' + str(current_year())
+        content = render_to_string('main/emails/mailsa.txt', context)
+        sender = 'publicrelations@alcheringa.in'
+        recipient = [candid.email]
+        message  = (subject, content , sender , recipient)
+        message_list.append(message)
+    
+    message_tuple = tuple(message_list)
+    send_mass_mail(message_tuple, fail_silently=False)
+    candids = candidate.objects.filter(year=current_year(), certificate_type = 'SA')
+    context = {
+        'candids': candids,
+    }
+    return render(request, 'main/salist.html', context)

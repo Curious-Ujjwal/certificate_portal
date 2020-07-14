@@ -15,5 +15,7 @@ urlpatterns = [
     path('massmail/<str:event_name>', views.massmail, name="massmail"),
     path('calist', views.calist, name="calist"),
     path('massmailca/', views.massmailca, name="massmailca"),
+    path('salist', views.salist, name="salist"),
+    path('massmailsa/', views.massmailsa, name="massmailsa"),
 ]
 

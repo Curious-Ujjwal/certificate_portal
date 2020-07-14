@@ -2,6 +2,7 @@ CERTIFICATE_OPTIONS = [
         ('CA', 'Campus Ambassador'),
         ('P' , 'Participant' ),
         ('W' , 'Winner'),
+        ('SA' , 'Special Achievement'),
     ]
 
 EVENT_OPTIONS = [

@@ -14,7 +14,8 @@
 <select name="events_id" id="events_id" onChange="window.location.href=this.value">
   
 </select>
-<a href= "{% url 'calist' %}"><button>Campus Ambassadors list</button> </a>
+<a href= "{% url 'calist' %}"><button>Campus Ambassadors list</button></a>
+<a href= "{% url 'salist' %}"><button>Special Achievers list</button></a>
 <br><br>
 
 <a href= "{% url 'massmail' event_name %}"><button>SEND MAIL TO ALL PARTICIPANTS IN {{ event_name }}</button></a>
@@ -28,6 +29,7 @@
 		<th>Position</th>
 		<th>College</th>
 		<th>EVENT</th>
+		<th>Special Achievement</th>
 		<th>IS_VALID</th>
 		<th>EMAIL</th>
 	</thead>
@@ -44,6 +46,7 @@
 			{% else %}
 			<td>{{candid.event}}</td>
 			{% endif %}
+			<td>{{ candid.special_achievement }} </td>
 			<td>{{candid.is_valid}}</td>
 			<td>{{candid.email}}</td>
 			{% if candid.is_valid and candid.is_generated %}
