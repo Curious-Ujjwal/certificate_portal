@@ -110,9 +110,9 @@ def candidList(request):
     return render(request, 'main/candidlist.html', context)
 
 @login_required
-def send_email(request , alcher_id):
+def send_email(request , alcher_id, certificate_type):
     try:
-        candid = candidate.objects.get(alcher_id = alcher_id)
+        candid = candidate.objects.get(alcher_id = alcher_id, certificate_type = certificate_type)
     except candidate.DoesNotExist:
         candid = None
 
@@ -137,7 +137,7 @@ def send_email(request , alcher_id):
 
     send_mail(
         'Certificate Alcheringa: ' + str(current_year()),
-        mailcontent,
+        content,
         'publicrelations@alcheringa.in',
         [candid.email],
         fail_silently = False,
