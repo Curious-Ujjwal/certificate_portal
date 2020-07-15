@@ -36,7 +36,7 @@
 			<td>{{candid.is_valid}}</td>
 			<td>{{candid.email}}</td>
 			{% if candid.is_valid and candid.is_generated %}
-			<td><a href="{% url 'send_email' candid.alcher_id %}"><button>Send Email</button></a></td>
+			<td><a href="{% url 'send_email' candid.alcher_id candid.certificate_url %}"><button>Send Email</button></a></td>
 			<td><a href="{% url 'certificate' candid.certificate_url %}" target="_blank"><button>View Certificate</button></a></td>
 			{% endif %}
 		</tr>

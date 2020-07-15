@@ -110,9 +110,9 @@ def candidList(request):
     return render(request, 'main/candidlist.html', context)
 
 @login_required
-def send_email(request , alcher_id, certificate_type):
+def send_email(request , alcher_id, certificate_url):
     try:
-        candid = candidate.objects.get(alcher_id = alcher_id, certificate_type = certificate_type)
+        candid = candidate.objects.get(alcher_id = alcher_id, certificate_url = certificate_url)
     except candidate.DoesNotExist:
         candid = None
 
